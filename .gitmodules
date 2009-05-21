@@ -1,0 +1,6 @@
+[submodule "complement"]
+	path = complement
+	url = git://github.com/ptr/complement.git
+[submodule "STLport"]
+	path = STLport
+	url = git://void-ptr.info/STLport.git
