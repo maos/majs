@@ -1,0 +1,121 @@
+#!/bin/bash
+
+# Time-stamp: <09/05/15 13:01:48 yeti>
+
+base=`cd \`dirname $0\`; echo $PWD`
+
+write_option() {
+  target=`echo $1 | sed -e 's/^[^=]*=//'`
+  echo $target
+}
+
+print_help() {
+  cat <<EOF
+Configuration utility.
+
+Usage:
+
+  configure [options]
+
+Available options:
+
+  --help                print this help message and exit
+
+  --prefix=<dir>        install to <dir>
+  --without-bfd         do not use bfd
+  --with-stlport=<dir>  use STLport in catalog <dir>
+  --with-stlport-headers=<dir> use STLport headers in catalog <dir>
+  --without-stlport     compile without STLport (default)
+  --with-boost=<dir>    use boost headers in catalog <dir>
+  --with-extra-cxxflags=<options>
+                        pass extra options to C++ compiler
+  --with-extra-cflags=<options>
+                        pass extra options to C compiler
+  --with-extra-ldflags=<options>
+                        pass extra options to linker (via C/C++)
+  --with-cxx=<name>     use <name> as C++ compiler (use --target= for cross-compilation)
+  --with-cc=<name>      use <name> as C compiler (use --target= for cross-compilation)
+
+EOF
+}
+
+for a in $@ ; do
+  case $a in
+    --help)
+      print_help
+      exit 0
+      ;;
+    --clean)
+      rm -f ${configmak}
+      exit 0
+      ;;
+  esac
+done
+
+
+withstlport=
+withstlporthdr="--with-stlport-headers=${base}/STLport/stlport"
+withextrald="--with-extra-ldflags=-L${base}/STLport/src/\${OUTPUT_DIR} -L${base}/STLport/src/\${OUTPUT_DIR_DBG}"
+withextrac=
+withextracxx=
+withcxx=
+withcc=
+prefix=
+
+while :
+do
+  case $# in
+    0)
+      break
+      ;;
+  esac
+  option="$1"
+  shift
+  case $option in
+    --prefix=*) 
+      prefix=`write_option "${option}"`
+      ;;
+    --without-bfd)
+      withbfd=--without-bfd
+      ;;
+    --with-stlport=*)
+      withstlport=--with-stlport=`write_option "${option}"`
+      ;;
+    --with-stlport-headers=*)
+      withstlporthdr=--with-stlport-headers=`write_option "${option}"`
+      ;;
+    --with-extra-ldflags=*)
+      withextrald=--with-extra-ldflags=\"`write_option "${option}"`\"
+      ;;
+    --with-extra-cflags=*)
+      withextrac=--with-extra-cflags=\"`write_option "${option}"`\"
+      ;;
+    --with-extra-cxxflags=*)
+      withextracxx=--with-extra-cxxflags=\"`write_option "${option}"`\"
+      ;;
+    --with-cxx=*)
+      withcxx=--with-cxx=\"`write_option "${option}"`\"
+      ;;
+    --with-cc=*)
+      withcc=--with-cc=\"`write_option "${option}"`\"
+      ;;
+    --without-stlport)
+      withstlport=--without-stlport
+      withstlporthdr=
+  esac
+done
+
+
+if [ "$withstlport" != "--without-stlport" ]; then
+  if [ -n "$prefix" ]; then
+    $base/STLport/configure --prefix=${prefix} ${withcxx} ${withcc}
+  else
+    $base/STLport/configure ${withcxx} ${withcc}
+  fi
+fi
+
+if [ -n "$prefix" ]; then
+  $base/complement/explore/configure --prefix=${prefix} ${withstlporthdr} "${withextrald}" ${withstlport} ${withboost} ${withextrac} ${withextracxx} ${withcxx} ${withcc} ${withbfd}
+else
+  $base/complement/explore/configure ${withstlporthdr} "${withextrald}" ${withstlport} ${withboost} ${withextrac} ${withextracxx} ${withcxx} ${withcc} ${withbfd}
+fi

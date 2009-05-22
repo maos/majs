@@ -18,8 +18,7 @@
 #include <cstdio>
 #include <numeric>
 
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
+#include <misc/opts.h>
 
 #include "script.h"
 #include "classifier.h"
@@ -38,11 +37,28 @@ typedef vector<int> vi;
 typedef vector< vi > vvi;
 typedef vector< ii > vii;
 
-
-int main()
-{
-  //freopen("test.in", "r", stdin);
-  //freopen("test.out", "w", stdout);
+int main( int argc, const char** argv )
+{ 
+  Opts opts;
+  
+  opts.description( "majs - MAlicios JavaScript detector" );
+  opts.usage( "[options]" );
+  opts.copyright( "Copyright (C) maos, 2009" );
+  
+  opts << option<void>( "print this help message", 'h', "help" );
+  
+  try {
+    opts.parse( argc, argv );
+  }
+  catch (...) {
+    opts.help( cerr );
+    return 1;
+  }
+  
+  if ( opts.is_set( 'h' ) ) {
+    opts.help( cerr );
+    return 0;
+  }
   
   MetricClassifier< script, 2 > mc;
 
@@ -51,12 +67,5 @@ int main()
 
   cout << mc.classify( script("whoami") ) << endl;
   
-  {
-    namespace fs = boost::filesystem;
-    fs::create_directory( "tmp" );
-  }
-  
-  //fclose(stdin);
-  //fclose(stdout);
   return 0;
 }

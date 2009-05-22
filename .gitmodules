@@ -4,3 +4,6 @@
 [submodule "STLport"]
 	path = STLport
 	url = git://void-ptr.info/STLport.git
+[submodule "boost"]
+	path = boost
+	url = git://discworld.yandex.ru/boost.git
