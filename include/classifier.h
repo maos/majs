@@ -25,6 +25,9 @@ class MetricClassifier
       selection.push_back(a);
       return *this;
     }
+    
+    void clear()
+      { selection.clear(); }
 
     int classify( const X& x );
 };
