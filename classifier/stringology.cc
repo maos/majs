@@ -1,9 +1,20 @@
 #include <string>
 #include <vector>
+#include <ctype.h>
 
-#include "stringology.h"
+#include <stringology.h>
 
 using namespace std;
+
+string tolower( const std::string& s )
+{
+  string res = s;
+  for (int i = 0;i < res.size();++i) {
+    res[i] = tolower(res[i]);
+  }
+  
+  return res;
+}
 
 int naive_edit_distance( const string& a, const string& b,int ch_cost, int ins_cost, int del_cost )
 {

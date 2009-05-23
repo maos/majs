@@ -9,6 +9,8 @@ class script
 {
   private:
     std::string p; // path
+    std::string url;
+    std::string desc;
   public:
     script( const std::string& _path ) :
         p( _path )
@@ -18,7 +20,7 @@ class script
      { return p; }
 
     double dist( const script& s ) const 
-      { return naive_edit_distance( fs::read_content( p ), fs::read_content( s.path() ) ); }
+      { return naive_edit_distance( fs::cat( p ), fs::cat( s.path() ) ); }
 };
 
 
