@@ -2,18 +2,19 @@
 #define _FILESYSTEM_H_
 
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <unistd.h>
 #include <dirent.h>
 #include <errno.h>
 #include <string>
 #include <stdexcept>
+#include <stdio.h>
 
 namespace fs {
 
 // warning: this is a dummy function that returns contents of file to a string
 // string may be rather huge to fit in RAM
 std::string cat( const std::string& path ) throw (std::runtime_error);
+std::string cat( FILE* f ) throw (std::runtime_error);
 
 int mkdir( const std::string& path );
 int rmdir( const std::string& path );

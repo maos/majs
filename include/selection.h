@@ -39,10 +39,9 @@ void extension_filter( InputIterator first,
 template < typename InputIterator, typename BackInsertIterator >
 void sz_filter( InputIterator first,
                 InputIterator last,
-                BackInsertIterator bi )
-{
-  int threshold = 2048;
-   
+                BackInsertIterator bi,
+                int threshold )
+{   
   for (InputIterator i = first;i != last;++i) {
     std::string& s = *i;
     if ( fs::sz( s ) <= threshold ) {
@@ -64,6 +63,10 @@ void script_filter( InputIterator first, InputIterator last, BackInsertIterator 
   }
 }
 
-int load_selection( const std::string& dir_path, std::vector< std::pair< script, int > >& selection, int answer  );
+int load_selection( const std::string& dir_path,
+                    std::vector< std::pair< script, int > >& selection,
+                    int answer,
+                    int mx_count,
+                    int mx_size  );
 
 #endif // _SELECTION_H_

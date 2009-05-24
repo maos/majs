@@ -1,5 +1,8 @@
 #include <sys/stat.h>
+#include <stdio.h>
 
+#include <cassert>
+#include <stdexcept>
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -37,6 +40,27 @@ std::string cat( const std::string& path ) throw (std::runtime_error)
     }
   }
   
+  return res;
+}
+
+std::string cat( FILE* f ) throw (std::runtime_error)
+{
+  assert( f != 0 );
+  
+  string res;
+  int c;
+
+  for ( ; ; ) {
+    c = fgetc(f);
+    if ( c != EOF ) {
+      res += char(c);
+    } else {
+      break;
+    }
+  }
+  
+  rewind(f);
+
   return res;
 }
 

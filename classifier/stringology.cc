@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cassert>
 
+#include <trie.h>
 #include <stringology.h>
 
 using namespace std;
@@ -79,4 +80,101 @@ int naive_edit_distance( const string& a, const string& b,int ch_cost, int ins_c
   return d[n][m];
 }
 
+int aho_korasik( const vector<string>& patterns,
+                         const string& text )
+{
+  int res = 0;
+  Trie t;
+  for (int i = 0;i < patterns.size();++i)
+    t += patterns[i];
+
+  t.calc_p_function();
+  t.calc_max_terminal_prefixes();
+  
+  Trie::node* j = t.root;
+  int i = 0;
+  int n = text.size();
+  
+  while (i < n) {   
+    if (j->childs[text[i]]) {
+      j = j->childs[text[i]];
+      ++i;
+    } else {
+      if (j != t.root) {
+        j = t.p[j];
+      } else {
+        ++i;
+      }
+    }
+    
+    if (j->is_terminal) {
+      ++res;
+      //string matched = t[j];
+      //cout << "find match with " << matched << " at position " << i - matched.size() << endl;
+    }
+    
+    if (j != t.root) {
+      Trie::node* k = t.m[j];
+      while (k != t.root) {
+        ++res;
+        //string matched = t[k];
+        //cout << "find match with " << matched << " at position " << i - matched.size() << endl;
+        k = t.m[k];
+      }
+    }
+  }
+  
+  return res;
+}
+
+// calculates z function for s
+vector<int> z_function( const string& s )
+{
+  int n = s.size();
+  vector<int> z(n);
+
+  int l = 0;
+  int r = 0;
+  int i;
+  z[0] = 0;
+
+  for (int k = 1;k < n;++k) {
+    if (k > r) {
+      i = 0;
+      while (k + i < n && s[k + i] == s[i])
+        ++i;
+      l = k;
+      z[k] = i;
+      r = k + i - 1;
+    } else {
+      int p = k - l;
+      if (r - k + 1 > z[p]) {
+        z[k] = z[p];
+      } else {
+        i = r - k + 1;
+        while (k + i < n && s[i] == s[k + i])
+          ++i;
+        l = k;
+        z[k] = i;
+        r = k + i - 1;
+      }
+    }
+
+  }
+
+  return z;
+}
+
+bool zmatch(const string& p,const string& t)
+{
+  vector<int> res;
+  int n = p.size();
+  vector<int> z = z_function(p + '0' + t);
+
+  for (int i = 0;i < z.size();++i)
+    if (z[i] == n)
+      return true;
+      
+  return false;
+}
 

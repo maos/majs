@@ -10,7 +10,8 @@ else
 LIBSUBDIRS := 
 endif
 
-LIBSUBDIRS += complement/explore/lib/misc
+LIBSUBDIRS += complement/explore/lib/misc \
+							complement/explore/lib/mt
 
 include ${SRCROOT}/Makefiles/gmake/subdirs.mak
 

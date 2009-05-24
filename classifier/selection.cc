@@ -10,7 +10,11 @@
 
 using namespace std;
  
-int load_selection( const string& dir_path, vector< pair< script, int > >& selection, int answer )
+int load_selection( const string& dir_path,
+                    vector< pair< script, int > >& selection,
+                    int answer,
+                    int mx_count,
+                    int mx_size )
 {
   selection.clear();
   
@@ -26,6 +30,7 @@ int load_selection( const string& dir_path, vector< pair< script, int > >& selec
   cout << " selection statistics for answer " << answer << ":" << endl;
   cout << "\t objects count = " << a.size() << endl;
   
+  /*
   vector< string > js_ext;
   vector< string > rest_ext;
   
@@ -50,23 +55,20 @@ int load_selection( const string& dir_path, vector< pair< script, int > >& selec
                     back_insert_iterator< vector< string > >( c ) );
                     
   cout << " \t after extension filter = " << b.size() + c.size() << endl;
+  */
+  
+  
+  sz_filter( a.begin(), a.end(), back_insert_iterator< vector< string > >( b ), mx_size );
+  cout << " \t after size filter = " << b.size() << endl;
   
   a.clear();
   script_filter( b.begin(), b.end(), back_insert_iterator< vector< string > >( a ) );
-  cout << " \t and after script filter = " << a.size() + c.size() << endl;
+  cout << " \t after script filter = " << a.size() << endl;
   
-  
-  b.clear();
-  sz_filter( a.begin(), a.end(), back_insert_iterator< vector< string > >( b ) );
-  sz_filter( c.begin(), c.end(), back_insert_iterator< vector< string > >( b ) );
-  cout << " \t after size filter = " << b.size() << endl;
-  
-  int mx_count = 10;
-  
-  int n = min( int(b.size()), mx_count );
+  int n = min( int(a.size()), mx_count );
   
   for (int i = 0;i < n;++i) {
-    selection.push_back( make_pair( script( b[i] ), answer ) );
+    selection.push_back( make_pair( script( a[i] ), answer ) );
   }
   
   cout << " \t after count filter = " << n << endl;

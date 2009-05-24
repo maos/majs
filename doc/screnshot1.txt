@@ -1,0 +1,52 @@
+Edit distance stats:
+
+size = 2048
+count = 200
+selection statistics for answer 0:                                                                                                                                         
+       objects count = 475                                                                                                                                                
+       after size filter = 282                                                                                                                                            
+       after script filter = 282                                                                                                                                          
+       after count filter = 200                                                                                                                                           
+selection statistics for answer 1:                                                                                                                                         
+       objects count = 33269                                                                                                                                              
+       after size filter = 17953                                                                                                                                          
+       after script filter = 17953                                                                                                                                        
+       after count filter = 200
+error probability = 0.0525
+time = 28m10.094s
+time per script = 4.225s
+
+size = 1500
+count = 300
+selection statistics for answer 0:                                                                                                                                         
+       objects count = 475                                                                                                                                                
+       after size filter = 213                                                                                                                                            
+       after script filter = 213                                                                                                                                          
+       after count filter = 213                                                                                                                                           
+selection statistics for answer 1:                                                                                                                                         
+       objects count = 33269                                                                                                                                              
+       after size filter = 17906                                                                                                                                          
+       after script filter = 17906                                                                                                                                        
+       after count filter = 300
+error probability = 0.0292398
+time = 25m18.298s
+time per script = 2.53s
+
+size = 1024
+count = 1000
+selection statistics for answer 0:                                                                                                                                         
+       objects count = 475                                                                                                                                                
+       after size filter = 131                                                                                                                                            
+       after script filter = 131                                                                                                                                          
+       after count filter = 131                                                                                                                                           
+selection statistics for answer 1:                                                                                                                                         
+       objects count = 33269                                                                                                                                              
+       after size filter = 17807                                                                                                                                          
+       after script filter = 17807                                                                                                                                        
+       after count filter = 1000                                                                                                                                          
+error probability = 0.00972591
+time = 40m53.508s
+time per script = 2.168s
+
+
+
