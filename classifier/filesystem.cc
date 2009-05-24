@@ -1,3 +1,5 @@
+#include <sys/stat.h>
+
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -67,6 +69,14 @@ std::string pwd()
     free( buf );
     return res;
   }
+}
+
+int sz( const string& path )
+{
+  struct stat st;
+  stat( path.c_str(), &st );
+  
+  return st.st_size;
 }
 
 } // fs

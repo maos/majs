@@ -12,6 +12,7 @@ class script
     std::string url;
     std::string desc;
   public:
+    script() {};
     script( const std::string& _path ) :
         p( _path )
       { };
@@ -20,7 +21,12 @@ class script
      { return p; }
 
     double dist( const script& s ) const 
-      { return naive_edit_distance( fs::cat( p ), fs::cat( s.path() ) ); }
+      { return edit_distance( fs::cat( p ), fs::cat( s.path() ) ); }
+    
+    bool operator==( const script& s ) 
+      { return (p == s.p); }
+    bool operator!=( const script& s )
+      { return !(*this == s); }
 };
 
 

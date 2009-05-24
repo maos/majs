@@ -31,6 +31,7 @@ int load_selection( const string& dir_path, vector< pair< script, int > >& selec
   
   js_ext.push_back( "js" );
   
+  rest_ext.push_back( "" );
   rest_ext.push_back( "txt" );
   rest_ext.push_back( "htm" );
   rest_ext.push_back( "mht" );
@@ -54,13 +55,21 @@ int load_selection( const string& dir_path, vector< pair< script, int > >& selec
   script_filter( b.begin(), b.end(), back_insert_iterator< vector< string > >( a ) );
   cout << " \t and after script filter = " << a.size() + c.size() << endl;
   
-  for (int i = 0;i < a.size();++i) {
-    selection.push_back( make_pair( script( a[i] ), answer ) );
+  
+  b.clear();
+  sz_filter( a.begin(), a.end(), back_insert_iterator< vector< string > >( b ) );
+  sz_filter( c.begin(), c.end(), back_insert_iterator< vector< string > >( b ) );
+  cout << " \t after size filter = " << b.size() << endl;
+  
+  int mx_count = 10;
+  
+  int n = min( int(b.size()), mx_count );
+  
+  for (int i = 0;i < n;++i) {
+    selection.push_back( make_pair( script( b[i] ), answer ) );
   }
   
-  for (int i = 0;i < c.size();++i ) {
-    selection.push_back( make_pair( script( c[i] ), answer ) );
-  }
+  cout << " \t after count filter = " << n << endl;
   
   return 0;
 }

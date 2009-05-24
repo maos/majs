@@ -37,24 +37,32 @@ int main( int argc, const char** argv )
     return 0;
   }
   
+  
   MetricClassifier< script, 2 > mc;
-  vector< pair< script, int > > selection;
   
-  string selection_path = opts.get< string >('s');
-  
-  vector< pair< script, int > > good;
-  vector< pair< script, int > > bad;
-  
-  load_selection( selection_path + "/bad", bad, 0 );
-  load_selection( selection_path + "/good", good, 1 );
-  
-  // awfull
-  for (int i = 0;i < good.size();++i) {
-    mc += good[i];
-  }
-  for (int i = 0;i < bad.size();++i) {
-    mc += bad[i];
-  }
+  // loading selection
+  {
+    vector< pair< script, int > > selection;
+    string selection_path = opts.get< string >('s');
     
+    vector< pair< script, int > > good;
+    vector< pair< script, int > > bad;
+    
+    load_selection( selection_path + "/bad", bad, 0 );
+    load_selection( selection_path + "/good", good, 1 );
+    
+    // awfull
+    for (int i = 0;i < good.size();++i) {
+      mc += good[i];
+    }
+    for (int i = 0;i < bad.size();++i) {
+      mc += bad[i];
+    }
+    
+    cout << "selection loaded" << endl;
+  }
+  
+  mc.stolp();
+  
   return 0;
 }

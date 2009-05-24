@@ -19,6 +19,7 @@ int mkdir( const std::string& path );
 int rmdir( const std::string& path );
 int cd( const std::string& path );
 std::string pwd();
+int sz( const std::string& path );
 
 // dummy way: no permision care
 int cp( const std::string& witch, const std::string& where );

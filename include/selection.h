@@ -28,9 +28,29 @@ void extension_filter( InputIterator first,
       }
     } else {
       // no extension
+      if ( std::find( ext_first, ext_last, "") ) {
+        ++bi = s;
+      }
     }
   }
 }
+
+// i ought to currently
+template < typename InputIterator, typename BackInsertIterator >
+void sz_filter( InputIterator first,
+                InputIterator last,
+                BackInsertIterator bi )
+{
+  int threshold = 2048;
+   
+  for (InputIterator i = first;i != last;++i) {
+    std::string& s = *i;
+    if ( fs::sz( s ) <= threshold ) {
+      ++bi = s;
+    }
+  }
+}
+
 
 template < typename InputIterator, typename BackInsertIterator >
 void script_filter( InputIterator first, InputIterator last, BackInsertIterator bi )
