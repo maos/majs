@@ -1,3 +1,5 @@
+//\textit{trie.cc}
+//\begin{verbatim}
 #include <map>
 #include <string>
 #include <iostream>
@@ -89,7 +91,10 @@ void Trie::output(ostream& out,const node* root,int level )
   if (root) {
     for (int c = 0;c < alphabet_size;++c)
       if (root->childs[c]) {
-        out << string(level,' ') << char(c) << (root->childs[c]->is_terminal ? "#" : "") <<  endl;
+        out << string(level,' ')
+            << char(c)
+            << (root->childs[c]->is_terminal ? "#" : "")
+            <<  endl;
         output(out,root->childs[c],level + 1);
       }
   }
@@ -131,7 +136,8 @@ void Trie::calc_p_function()
         }
         
         if (p[x] == root) {
-          p[y] = ((root->childs[c] && y != root->childs[c]) ? root->childs[c] : root);
+          p[y] = ( (root->childs[c] && y != root->childs[c])
+                   ? root->childs[c] : root);
         }
         
         q.push(y);
@@ -175,3 +181,4 @@ void Trie::calc_max_terminal_prefixes()
         q.push(x->childs[c]);
   }
 }
+//\end{verbatim}

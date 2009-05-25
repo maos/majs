@@ -1,3 +1,5 @@
+//\textit{classifier.cc}
+//\begin{verbatim}
 #include <classifier.h>
 #include <string>
 #include <iostream>
@@ -53,8 +55,13 @@ void test_metric_classifiers( const std::string& selection_path,
     cout << "selection loaded" << endl;
   }
   
-  cout << "error probability for edit distance = " << edit_distance_classifier.loo() << endl;
-  cout << "error probability for frequency distribution = " << frequency_classifier.loo() << endl;
+  cout << "error probability for edit distance = "
+       << edit_distance_classifier.loo()
+       << endl;
+          
+  cout << "error probability for frequency distribution = "
+       << frequency_classifier.loo()
+       << endl;
 }
               
 
@@ -80,6 +87,8 @@ int classify( const std::string& target,
     fclose(f);
   }
   
+  cout << "script size = " << fs::sz( script_path.c_str() ) << endl;
+  
   // cout << fs::cat( script_path );
   
   if ( nojs( script_path ) ) {
@@ -98,7 +107,7 @@ int classify( const std::string& target,
   }
   
   // playing with bad words
-  int words_weight = 0; // search_bad_words( words_path, script_path );
+  int words_weight = 10 * search_bad_words( words_path, script_path );
   
   MetricClassifier< edit_distance_script, 2 > edit_distance_classifier(1);
   MetricClassifier< frequency_script, 2 > frequency_classifier(1);
@@ -133,10 +142,20 @@ int classify( const std::string& target,
     cout << "selection loaded" << endl;
   }
   
-  int edit_distance_weight = 42 * ( (edit_distance_classifier.classify( edit_distance_script( script_path ) ) == 0) ? -1 : 1);
-  int frequency_weight = 10 * ( (frequency_classifier.classify( edit_distance_script( script_path ) ) == 0) ? -1 : 1);
+  cout << "go classifiers, go!" << endl;
+  int edit_ans = edit_distance_classifier.classify( 
+              edit_distance_script( script_path ) );
+              
+  int fr_ans = frequency_classifier.classify( edit_distance_script( script_path ) );
   
-  int res = (top_weight + fishing_weight + words_weight + edit_distance_weight + frequency_weight); 
+  int edit_distance_weight = 42 * ( ( edit_ans == 0) ? -1 : 1 );
+  int frequency_weight = 10 * ( (fr_ans == 0) ? -1 : 1);
+  
+  int res = ( top_weight +
+             fishing_weight +
+             words_weight +
+             edit_distance_weight +
+             frequency_weight); 
   
   cout << "top_weight = " << top_weight << endl;
   cout << "fishing_weight = " << fishing_weight << endl;
@@ -144,7 +163,9 @@ int classify( const std::string& target,
   cout << "edit_distance_weight = " << edit_distance_weight << endl;
   cout << "frequency_weight = " << frequency_weight << endl;
   
-  cout << res << endl;
+  cout << "total weight = " << res << endl;
   
   return ( res >= 0 );
 }
+//\end{verbatim}
+ 

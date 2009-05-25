@@ -1,3 +1,5 @@
+//\textit{frequency.cc}
+//\begin{verbatim}
 #include <vector>
 #include <string>
 #include <cassert>
@@ -33,3 +35,5 @@ double euclid_metric( const vector< int >& a, const vector< int >& b)
   
   return sqrt( res );
 }
+
+//\end{verbatim}

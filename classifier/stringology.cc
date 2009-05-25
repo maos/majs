@@ -1,3 +1,5 @@
+//\textit{selection.cc}
+//\begin{verbatim}
 #include <string>
 #include <vector>
 #include <ctype.h>
@@ -7,8 +9,24 @@
 
 #include <trie.h>
 #include <stringology.h>
+#include <selection.h>
 
 using namespace std;
+
+vector<int> toint( const string& a, int c )
+{
+  int n = a.size();
+  int m = (n / c) + ((n % c) != 0);
+  vector<int> res(m);
+  int i, j;
+  for (i = 0,j = 0;i < n;i += c,++j) {
+    for (int k = 0;k < c;++k) {
+      res[j] = (res[j] << 8) | toint(a[i + k]);
+    }
+  }
+  
+  return res;
+}
 
 string tolower( const std::string& s )
 {
@@ -36,17 +54,18 @@ int lis( const vector< int >& a )
 int toint( char c )
   { return (c + 8 * sizeof(char) ) % (8 * sizeof(char)); }
 
-int lcs( const string& a, const string& b )
+int lcs( const vector<int>& a, const vector<int>& b )
 {
-  vector< vector< int > > t( (1 << (8 * sizeof(char)) ) );
+  vector< vector< int > > t( (1 << (8 * sizeof(short)) ) );
   for (int i = int(b.size()) - 1;i >= 0;--i) {
-    t[ toint(b[i]) ].push_back( i );
+    assert(b[i] < t.size());
+    t[ b[i] ].push_back( i );
   }
   
   vector< int > c;
   for (int i = 0;i < a.size();++i) {
-    for (int j = 0;j < t[ toint(a[i]) ].size();++j) {
-      c.push_back( t[ toint(a[i]) ][j] );
+    for (int j = 0;j < t[ a[i] ].size();++j) {
+      c.push_back( t[ a[i] ][j] );
     }
   }
   
@@ -56,11 +75,17 @@ int lcs( const string& a, const string& b )
 // precondition: ch_cost = 2, ins_cost = del_cost = 1;
 int edit_distance( const string& a, const string& b )
 {
-  return a.size() + b.size() - 2 * lcs( a, b );
+  vector<int> p = toint(a);
+  vector<int> q = toint(b);
+  return p.size() + q.size() - 2 * lcs( p, q );
 }
 
 // simple dynamics
-int naive_edit_distance( const string& a, const string& b,int ch_cost, int ins_cost, int del_cost )
+int naive_edit_distance( const string& a,
+                         const string& b,
+                         int ch_cost,
+                         int ins_cost,
+                         int del_cost )
 {
   int n = a.size();
   int m = b.size();
@@ -109,16 +134,22 @@ int aho_korasik( const vector<string>& patterns,
     
     if (j->is_terminal) {
       ++res;
-      //string matched = t[j];
-      //cout << "find match with " << matched << " at position " << i - matched.size() << endl;
+      // string matched = t[j];
+      // cout << "find match with " 
+      //      << matched
+      //      << " at position "
+      //      << i - matched.size() << endl;
     }
     
     if (j != t.root) {
       Trie::node* k = t.m[j];
       while (k != t.root) {
         ++res;
-        //string matched = t[k];
-        //cout << "find match with " << matched << " at position " << i - matched.size() << endl;
+        // string matched = t[k];
+        // cout << "find match with "
+        //      << matched
+        //      << " at position "
+        //      << i - matched.size() << endl;
         k = t.m[k];
       }
     }
@@ -177,4 +208,5 @@ bool zmatch(const string& p,const string& t)
       
   return false;
 }
+//\end{verbatim}
 

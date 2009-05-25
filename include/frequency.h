@@ -1,3 +1,5 @@
+//\textit{frequency.h}
+//\begin{verbatim}
 #ifndef _FREQUENCY_H_
 #define _FREQUENCY_H_
 
@@ -12,3 +14,4 @@ double euclid_metric( const std::vector< int >& a, const std::vector< int >& b);
 // also try to play with minkowski metric
 
 #endif // _FREQUENCY_H_
+//\end{verbatim}

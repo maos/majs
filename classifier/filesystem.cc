@@ -1,3 +1,5 @@
+//\textit{filesystem.cc}
+//\begin{verbatim}
 #include <sys/stat.h>
 #include <stdio.h>
 
@@ -104,3 +106,4 @@ int sz( const string& path )
 }
 
 } // fs
+//\end{verbatim}

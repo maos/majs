@@ -1,3 +1,5 @@
+//\textit{evristics.cc}
+//\begin{verbatim}
 #include <map>
 #include <string>
 #include <fstream>
@@ -15,7 +17,8 @@ bool nojs( const std::string& script_path )
   return !zmatch( "<script", fs::cat( script_path ) );
 }
 
-map< string, int > load_top( const string& top_path, int top_count ) throw (runtime_error)
+map< string, int > load_top( const string& top_path,
+                             int top_count ) throw (runtime_error)
 {
   ifstream in( top_path.c_str() );
   if ( !in.is_open() ) {
@@ -50,7 +53,9 @@ int search_top( const map< string, int >& m, const string& target )
 
 // good reason to call this is search_top returned 0
 // same return logic as in search_top but with - sign.
-int search_fishing( const map< string, int >& m, const string& target, int threshold )
+int search_fishing( const map< string, int >& m,
+                    const string& target,
+                    int threshold )
 {
   // currently find first that is less than threshold
   for ( map< string, int >::const_iterator i = m.begin();i != m.end();++i ) {
@@ -62,7 +67,8 @@ int search_fishing( const map< string, int >& m, const string& target, int thres
   return 0;
 }
 
-int search_bad_words( const string& words_path, const string& script_path ) throw (runtime_error)
+int search_bad_words( const string& words_path,
+                      const string& script_path ) throw (runtime_error)
 {
   ifstream in( words_path.c_str() );
   if ( !in.is_open() ) {
@@ -75,5 +81,14 @@ int search_bad_words( const string& words_path, const string& script_path ) thro
     patterns.push_back(s);
   }
   
-  return -aho_korasik( patterns, fs::cat( script_path ) );
+  int res = 0;
+  string text = fs::cat( script_path );
+  for (int i = 0;i < patterns.size();++i) {
+    res += zmatch( patterns[i], text );
+  }
+  
+  return -res;
+  
+  //return -aho_korasik( patterns, fs::cat( script_path ) );
 }
+//\end{verbatim}

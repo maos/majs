@@ -1,3 +1,5 @@
+//\textit{classifier.h}
+//\begin{verbatim}
 #ifndef _CLASSIFIER_H_
 #define _CLASSIFIER_H_
 
@@ -43,10 +45,12 @@ class MetricClassifier
     
     selection_container_type order_selection( const X& x );
     std::pair< X, int > get_nearest_neighbor( const X& x );
-    selection_container_type get_active_selection( const X& x, int c ); // c neighbors
+    selection_container_type get_active_selection( const X& x, int c );
     
     double get_weight( const X& target_x, const X& neighbor_x, int rank );
-    double get_class_weight( const X& x, int y, const selection_container_type& active );
+    double get_class_weight( const X& x,
+                             int y,
+                             const selection_container_type& active );
 
     int classify( const X& x );
     
@@ -59,7 +63,8 @@ class MetricClassifier
 
 // warn: selection_container_type must be returned
 template < typename X, int m >
-std::vector< std::pair< X, int > > MetricClassifier< X, m >::get_active_selection( const X& x, int c )
+std::vector< std::pair< X, int > >
+MetricClassifier< X, m >::get_active_selection( const X& x, int c )
 {
   selection_container_type res;
   if (c <= 0) { // order all selection
@@ -82,7 +87,9 @@ template < typename X, int m >
 std::pair< X, int > MetricClassifier< X, m >::get_nearest_neighbor( const X& x )
 {
   int n = selection.size();
-  std::vector< std::pair< double, int > > ind(n); // MetricClassifier::selection_container_type::iterator instead of int here
+  
+  // MetricClassifier::selection_container_type::iterator instead of int here
+  std::vector< std::pair< double, int > > ind(n); 
   int j;
 
   for (int i = 0;i < n;++i) { // make normal iterator base cycle here
@@ -94,10 +101,12 @@ std::pair< X, int > MetricClassifier< X, m >::get_nearest_neighbor( const X& x )
 
 // warn: selection_container_type must be returned
 template < typename X, int m >
-std::vector< std::pair< X, int > >  MetricClassifier< X, m >::order_selection( const X& x )
+std::vector< std::pair< X, int > > 
+MetricClassifier< X, m >::order_selection( const X& x )
 {
   int n = selection.size();
-  std::vector< std::pair< double, int > > ind(n); // MetricClassifier::selection_container_type::iterator instead of int here
+  // MetricClassifier::selection_container_type::iterator instead of int here
+  std::vector< std::pair< double, int > > ind(n);
   int j;
 
   for (int i = 0;i < n;++i) { // make normal iterator base cycle here
@@ -116,14 +125,20 @@ std::vector< std::pair< X, int > >  MetricClassifier< X, m >::order_selection( c
 }
 
 template < typename X, int m >
-double MetricClassifier< X, m >::get_weight( const X& target_x, const X& neighbor_x, int rank )
+double MetricClassifier< X, m >::get_weight( const X& target_x,
+                                             const X& neighbor_x,
+                                             int rank )
 {
   const double q = 0.96;
   return pow( q, rank );
 }
 
 template < typename X, int m >
-double MetricClassifier< X, m >::get_class_weight( const X& x, int y, const selection_container_type& active_selection )
+double
+MetricClassifier< X, m >::get_class_weight( const X& x,
+                                            int y,
+                                            const selection_container_type&
+                                            active_selection )
 {  
   int n = active_selection.size();
   double res = 0;
@@ -183,7 +198,8 @@ void MetricClassifier< X, m >::stolp()
     std::vector< bool > ejections( selection.size() );
 
     for (int i = 0;i < selection.size();++i) {
-      if ( margin( selection[i].first, selection[i].second ) < ejection_threshold ) {
+      if ( margin( selection[i].first,
+                   selection[i].second ) < ejection_threshold ) {
         ejections[i] = true;
       }
     }
@@ -220,4 +236,4 @@ double MetricClassifier< X, m >::loo()
 }
 
 #endif // _CLASSIFIER_H_
- 
+//\end{verbatim}

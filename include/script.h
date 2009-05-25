@@ -1,3 +1,5 @@
+//\textit{script.h}
+//\begin{verbatim}
 #ifndef _SCRIPT_H_
 #define _SCRIPT_H_
 
@@ -71,8 +73,10 @@ class frequency_script :
       { };
         
     virtual double dist( const script& s ) const 
-      { return euclid_metric( frequency( fs::cat( p ) ), frequency( fs::cat( s.path() ) ) ); }
+      { return euclid_metric( frequency( fs::cat( p ) ),
+                              frequency( fs::cat( s.path() ) ) ); }
 };  
 
 
 #endif // _SCRIPT_H_
+//\end{verbatim}

@@ -1,3 +1,5 @@
+//\textit{trie.h}
+//\begin{verbatim}
 #ifndef _TRIE_H_
 #define _TRIE_H_
 
@@ -48,3 +50,4 @@ struct Trie
 };
 
 #endif // _TRIE_H_
+//\end{verbatim}
